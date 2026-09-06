@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- API ≤30 的云备份规则(31+ 走 data_extraction_rules.xml)。
+     只备份偏好(地图位置/引导状态/最近访问)与巡礼记录;声明了 include 后其余域默认不备份,
+     抠图运行时缓存(files/cutout,~140MB 可重新下载的原生库+模型)因此天然被排除。 -->
+<full-backup-content>
+    <include domain="sharedpref" path="." />
+    <!-- 巡礼记录(用户标为已完成的地标),几 KB 到几百 KB 的 JSON。 -->
+    <include domain="file" path="pilgrimage_log.json" />
+</full-backup-content>

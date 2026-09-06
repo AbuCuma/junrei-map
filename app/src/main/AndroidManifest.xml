@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 与 iOS 版一致仅前台、粗精度即够用,但也声明 FINE 让用户可选精确定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <!-- API 30+ 包可见性:ExternalLinks 需要解析 CCT 浏览器包
+         (CustomTabsClient.getPackageName),否则「在网页版打开」会被
+         链接解析劫回 App 自身(当用户把 anitabi.cn 链接默认交给本 App 时)。 -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
+    <application
+        android:name=".app.AnitabiApplication"
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:localeConfig="@xml/locales_config"
+        android:theme="@style/Theme.Anitabi">
+
+        <!-- ISNet-Anime 的 QNN HTP 路径:FastRPC 桩会 dlopen /vendor 下的 libcdsprpc.so(非高通设备忽略)。 -->
+        <uses-native-library android:name="libcdsprpc.so" android:required="false" />
+
+        <!-- Google Maps API key(来自 local.properties;未引入 secrets 插件前由构建脚本手动注入)。 -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
+        <!-- 请求在安装时下载 ML Kit 的 unbundled 模型。 -->
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="subject_segment" />
+
+        <activity
+            android:name=".app.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|fontScale|density">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- 主通道:自定义 scheme(无需域名验证,是 https 通道的保底)。 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="anitabi" android:host="map" />
+            </intent-filter>
+
+            <!-- https 通道:尚未部署 assetlinks.json,Android 12+ 需要用户手动启用。
+                 社区部署之后 autoVerify 会直接生效。 -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:path="/map" />
+                <data android:host="anitabi.cn" />
+                <data android:host="www.anitabi.cn" />
+                <data android:host="ww.anitabi.cn" />
+                <data android:host="w.junreimap.com" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

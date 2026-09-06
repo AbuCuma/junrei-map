@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="data_load_failed">巡礼データの読み込みに失敗しました。ネットワークをご確認ください</string>
+    <string name="image_load_failed">画像を読み込めませんでした</string>
+    <string name="location_permission_denied">位置情報の権限が拒否されました。システム設定から有効にできます</string>
+    <string name="oss_licenses_title">オープンソースライセンス</string>
+    <string name="search_placeholder">作品・地点・都市を検索</string>
+    <string name="nearby_sanctuaries">近くの聖地</string>
+    <string name="enable_location_prompt">位置情報を有効にすると近くの巡礼スポットが見られます</string>
+    <string name="location_privacy_note">使用中のみ大まかな位置を取得します。移動履歴は記録しません</string>
+    <string name="no_results">一致する結果が見つかりません</string>
+    <string name="marked_location">マークした位置</string>
+    <string name="upload_screenshot">スクリーンショットを追加 ›</string>
+    <string name="etiquette_warning_banner">学校・図書館などの場所です。巡礼マナーにご注意ください</string>
+    <string name="app_welcome_title">巡礼地図へようこそ</string>
+    <string name="feature_map_title">世界の聖地マップ</string>
+    <string name="feature_map_detail">ズームに応じて 5 万+ の巡礼スポットと場面写真を表示</string>
+    <string name="feature_search_title">ローカル高速検索</string>
+    <string name="feature_search_detail">作品・地点・都市をまとめて即座に検索</string>
+    <string name="feature_community_title">コミュニティと共に</string>
+    <string name="feature_community_detail">データは anitabi.cn から。追加・修正を歓迎します</string>
+    <string name="welcome_cc_note">コンテンツは CC BY-NC-SA 4.0 · スクリーンショットの著作権は原作品に帰属します</string>
+    <string name="about_license_body">本アプリのコンテンツは CC BY-NC-SA 4.0 で共有されます。投稿コンテンツも同じライセンスに従います。スクリーンショットと作品名の権利は原権利者に帰属し、場面対照のためにのみ使用します。データは anitabi.cn コミュニティによるものです。</string>
+    <string name="etiquette_body">この聖地は学校・図書館など日常的に使われている場所です。非公開エリアに入らない、生徒や居合わせた人を撮影しない、静かに過ごし現地のルールに従う —— をお守りください。巡礼者のマナー違反により見学が制限された聖地もあります。巡礼が歓迎され続けますように。</string>
+    <string name="view_etiquette_guide">巡礼マナーガイドを見る</string>
+    <string name="set_default_links">anitabi.cn のリンクを既定で開く ›</string>
+    <string name="camera_permission_needed">対比撮影にはカメラ権限が必要です</string>
+    <string name="capture_failed">撮影に失敗しました</string>
+    <string name="cutout_mode">合成</string>
+    <string name="full_image_mode">全体図</string>
+    <string name="contributors_thanks">%1$s ほか %2$d 名の巡礼者に感謝</string>
+    <string name="work_pilgrimage_spot">「%1$s」の巡礼スポット</string>
+    <string name="ungrouped">未分類</string>
+    <string name="cutout_model_downloading">AI 切り抜きモデルを取得中… %1$d%%</string>
+    <string name="isnet_experiment_title">AI 切り抜き強化(実験的)</string>
+    <string name="isnet_experiment_detail">オンにするとすぐに Wi-Fi でモデルを取得し、進み具合を下に表示します。既定はオフ。標準の切り抜きはそのまま使えます。</string>
+    <string name="loading_reference">参考画像を読み込み中…</string>
+    <string name="reference_load_failed">参考画像を取得できません</string>
+    <string name="extracting_subject">被写体を切り抜き中…</string>
+    <string name="a11y_reset_north">地図を北向きに戻す</string>
+    <string name="a11y_my_location">現在地</string>
+    <string name="a11y_map_layers">地図レイヤー</string>
+    <string name="a11y_random_work">ランダム作品</string>
+    <string name="a11y_shutter">撮影</string>
+    <string name="a11y_peek">長押しで参考画像を隠す</string>
+    <string name="isnet_status_preparing">取得が必要なものを確認しています…</string>
+    <string name="isnet_status_waiting_wifi">Wi-Fi 接続を待ってモデルを取得します</string>
+    <string name="isnet_action_use_mobile_data">モバイルデータで取得</string>
+    <string name="isnet_status_downloading">取得中 %1$d%%（%2$.1f / %3$.1f MB）</string>
+    <string name="isnet_status_ready">準備完了 · %1$s で実行</string>
+    <string name="isnet_status_failed">取得に失敗しました：%1$s</string>
+    <string name="isnet_status_unavailable">この端末では利用できません。標準の切り抜きを使います</string>
+
+    <!-- 巡礼记录（已完成地标；本仓库自有功能） -->
+    <string name="visited">訪問済み</string>
+    <string name="a11y_mark_visited">訪問済みにする</string>
+    <string name="a11y_unmark_visited">訪問済みを解除</string>
+    <string name="visited_progress">訪問済み %1$d/%2$d</string>
+    <string name="visit_filter_all">すべての地点</string>
+    <string name="visit_filter_visited">訪問済みのみ</string>
+    <string name="visit_filter_unvisited">未訪問のみ</string>
+    <string name="pilgrimage_log">巡礼の記録</string>
+    <string name="pilgrimage_log_summary">訪問済み %1$d 地点 · %2$d 作品</string>
+    <string name="pilgrimage_log_empty">訪問済みの地点はまだありません。地点カードの ✓ で記録できます。</string>
+    <string name="pilgrimage_log_orphans">ほかに %1$d 地点がデータセットから削除されています</string>
+
+    <!-- 作品分類 -->
+    <string name="cat_game">ゲーム</string>
+    <string name="cat_theatrical">劇場版</string>
+    <string name="cat_film">実写映画</string>
+    <string name="cat_manga_series">漫画シリーズ</string>
+    <string name="cat_manga">漫画</string>
+    <string name="cat_novel_series">小説シリーズ</string>
+    <string name="cat_novel">小説</string>
+    <string name="cat_jdrama">日本のドラマ</string>
+    <string name="cat_cdrama">中華ドラマ</string>
+    <string name="cat_western_drama">欧米ドラマ</string>
+    <string name="cat_tv_drama">テレビドラマ</string>
+    <string name="cat_music">音楽</string>
+    <string name="cat_stage">舞台</string>
+    <string name="cat_artbook">画集</string>
+    <string name="cat_expansion">拡張パック</string>
+    <string name="cat_other">その他</string>
+</resources>

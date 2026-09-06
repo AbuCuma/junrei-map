@@ -1,0 +1,71 @@
+巡礼地图 / Junrei Map — 第三方组件声明 / Third-party notices
+========================================================
+
+本应用在运行时使用或分发以下第三方组件。完整许可证文本见 licenses/ 目录。
+
+**除另有注明外**,本仓库的源代码与界面文案以 Apache License 2.0 发布(见 LICENSE)。
+下列第三方组件各自保留其原有许可证,**不因为出现在本仓库或被本应用使用而改变授权**。
+
+Except where otherwise noted, the source code and UI strings in this repository
+are released under the Apache License 2.0 (see LICENSE). The third-party
+components listed below remain under their own licenses and are not relicensed
+by this project.
+
+1. ISNet-Anime 模型(anime-segmentation)
+   - 来源: https://github.com/SkyTNT/anime-segmentation
+   - 许可: Apache License 2.0(licenses/anime-segmentation-APACHE-2.0.txt)
+   - 用途: 对比拍摄的人物抠图模型。模型权重不随仓库分发,由应用在
+     运行时从 CUTOUT_MANIFEST_URL 指向的服务器下载(含量化/编译后的变体)。
+
+2. ONNX Runtime
+   - 来源: https://github.com/microsoft/onnxruntime
+   - 许可: MIT License(licenses/onnxruntime-MIT.txt)
+   - 用途: 端上推理引擎。libonnxruntime.so 不打进 APK,经上述
+     cutout 服务器在运行时分发。
+
+3. Qualcomm QNN / QAIRT(AI Engine Direct / AI Runtime)运行库
+   - 许可: Qualcomm 专有许可。**本仓库不含任何高通二进制,官方也不托管它们。**
+   - 用途: 高通 NPU(HTP)推理后端。**默认不可用** —— 官方下发的 manifest 只
+     描述 CPU 档,缺件时 CutoutEngine 会自动降到 CPU 档。
+   - 再分发边界: Qualcomm AI Stack License 授予的是「以 object code 形式、
+     **且在集成进你的软件应用的前提下**」分发的权利,**未**授予 standalone
+     分发或再许可。因此随 APK 内嵌是允许的,而把 .so 单独打包供人下载
+     (本 App 的运行时下载模型正属于此)不在授权范围内。
+     这些二进制**不适用本项目的开源许可证**,且不得反编译,不得删改其
+     版权与专有权利声明。
+   - 自建服务器提供 HTP 档之前,请以**你实际下载的那个 QAIRT/QNN SDK 目录里的
+     LICENSE.pdf** 为准 —— 不同渠道与版本的条款可能不同。
+     详见 docs/cutout-runtime.md。
+
+4. Google ML Kit Subject Segmentation
+   - 条款: https://developers.google.com/ml-kit/terms
+   - 用途: 抠图兜底路径(unbundled,经 Google Play services 分发)。
+
+5. Google Maps SDK for Android / Google Play services
+   - 条款: https://cloud.google.com/maps-platform/terms
+   - 用途: 底图渲染与定位。地图归因由 SDK 自行渲染。
+
+6. 深色地图样式(app/src/main/res/raw/map_style_dark.json)
+   - 来源: Google Maps Platform 官方 "Night mode" 示例样式(Apache 2.0 示例代码)。
+
+7. 巡礼数据与截图
+   - 来自 anitabi.cn,CC BY-NC-SA 4.0(见 README 的「许可」一节)。本仓库不包含任何巡礼数据、
+     截图或作品封面;它们由应用在运行时从 anitabi.cn 的 CDN 获取。
+
+8. OpenCC(开放中文转换)
+   - 许可: Apache-2.0(licenses/opencc-APACHE-2.0.txt)
+   - 用途: 搜索用的汉字异体折叠表。本仓库**不包含 OpenCC 代码或字典本身**,
+     只包含由其 JPShinjitaiCharacters.txt + TSCharacters.txt 复合派生的字符表
+     app/src/main/java/cn/anitabi/map/data/search/HanFoldTable.kt(生成物)。
+     重新生成见 tools/build_han_fold_table.py。
+
+9. Unicode 字符数据库(Unihan)
+   - 许可: Unicode License v3(licenses/unicode-LICENSE.txt)
+   - 用途: 搜索用的汉字→拼音表。本仓库只包含由 Unihan_Readings.txt 的 kMandarin
+     字段派生的读音表 app/src/main/java/cn/anitabi/map/data/search/PinyinTable.kt
+     (生成物)。重新生成见 tools/build_pinyin_table.py。
+
+10. 应用图标
+   - store/icon-source.png 为本项目制作的源图(以图像生成模型生成,文件内保留了生成来源的
+     C2PA 元数据),经 tools/gen_launcher_icon.py 派生出全部启动图标资源。不含 anitabi.cn
+     官方应用或网站的任何素材。随本仓库以 Apache License 2.0 发布。

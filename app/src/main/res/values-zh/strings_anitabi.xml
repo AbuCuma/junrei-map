@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 界面文案（中文）。本项目独立撰写与维护；name 不要改，占位符与默认（英文）版一致。 -->
+<resources>
+    <plurals name="n_spots">
+        <item quantity="other">%d 个点位</item>
+    </plurals>
+    <plurals name="n_photos">
+        <item quantity="other">%d 张截图</item>
+    </plurals>
+    <string name="cc_by_nc_sa_4_0_screenshots">CC BY-NC-SA 4.0 · 截图版权归原作品所有</string>
+    <string name="google_navigation">Google 导航</string>
+    <string name="character_only">仅叠加角色</string>
+    <string name="work">作品</string>
+    <string name="browse_works">作品浏览</string>
+    <string name="save">保存</string>
+    <string name="save_failed">保存失败</string>
+    <string name="fix_coordinates">修正坐标</string>
+    <string name="compare_image">做对比图</string>
+    <string name="expand_all">全部展开</string>
+    <string name="collapse_all">全部折叠</string>
+    <string name="about">关于</string>
+    <string name="close">关闭</string>
+    <string name="share">分享</string>
+    <string name="photo_pins">剧照标注</string>
+    <string name="satellite">卫星</string>
+    <string name="cancel">取消</string>
+    <string name="add_spot_here">在此添加地标</string>
+    <string name="open_in_web_version">在网页版打开</string>
+    <string name="maps">地图</string>
+    <string name="spots">地标</string>
+    <string name="city">城市</string>
+    <string name="expand_or_collapse_all_groups">展开或折叠全部分组</string>
+    <string name="pilgrimage_data_feedback">巡礼数据反馈</string>
+    <string name="pilgrimage_etiquette">巡礼礼仪</string>
+    <string name="saved_to_photos">已保存到相册</string>
+    <string name="coordinates_copied">已拷贝坐标</string>
+    <string name="get_started">开始使用</string>
+    <string name="copy_coordinates">拷贝坐标</string>
+    <string name="by_group">按分组</string>
+    <string name="by_episode">按话数</string>
+    <string name="new_label">新收录</string>
+    <string name="more">更多</string>
+    <string name="updated_n">更新于 %s</string>
+    <string name="updated">最近更新</string>
+    <string name="recently_viewed">最近查看</string>
+    <string name="standard">标准</string>
+    <string name="etiquette">注意礼仪</string>
+    <string name="clear">清除</string>
+    <string name="popular">热门</string>
+    <string name="popular_cities">热门城市</string>
+    <string name="spots_nearest_to_this_pin">离这里最近的巡礼点</string>
+    <string name="wikipedia">维基百科</string>
+    <string name="moegirl">萌娘百科</string>
+    <string name="street">街景</string>
+    <string name="back">返回</string>
+    <string name="no_screenshot_yet">还没有截图</string>
+    <string name="retake">重拍</string>
+    <string name="watch_welcome_screen_again">重看欢迎页</string>
+    <string name="retry">重试</string>
+    <string name="this_links_content_doesnt_exist_or_has">链接的内容不存在或已删除</string>
+</resources>

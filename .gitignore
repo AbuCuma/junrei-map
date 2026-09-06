@@ -1,0 +1,34 @@
+# Gradle
+.gradle
+/build
+.kotlin
+
+# Local configuration (holds MAPS_API_KEY / CUTOUT_MANIFEST_URL — never commit)
+local.properties
+
+# Signing & credentials — never commit
+*.keystore
+*.jks
+*.p12
+*.pem
+google-services.json
+
+# IDE
+/.idea/
+*.iml
+
+# OS / misc
+.DS_Store
+/captures
+.externalNativeBuild
+.cxx
+
+# 签名相关(在有人加 signingConfig 之前就先挡住 —— *.jks/*.keystore 覆盖不到这些惯用文件名)
+keystore.properties
+key.properties
+signing.properties
+
+# 构建产物与内存快照
+*.apk
+*.aab
+*.hprof

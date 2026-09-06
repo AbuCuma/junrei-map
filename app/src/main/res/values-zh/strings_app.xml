@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="data_load_failed">巡礼数据加载失败,请检查网络</string>
+    <string name="image_load_failed">图片加载失败</string>
+    <string name="location_permission_denied">定位权限被拒绝,可在系统设置中开启</string>
+    <string name="oss_licenses_title">开源组件许可</string>
+    <string name="search_placeholder">搜索作品 / 地点 / 城市</string>
+    <string name="nearby_sanctuaries">附近的圣地</string>
+    <string name="enable_location_prompt">开启定位以查看附近的巡礼点</string>
+    <string name="location_privacy_note">仅在使用时获取粗略位置，不记录轨迹</string>
+    <string name="no_results">没有找到匹配的结果</string>
+    <string name="marked_location">标记的位置</string>
+    <string name="upload_screenshot">补传截图 ›</string>
+    <string name="etiquette_warning_banner">此处为学校/图书馆等场所，巡礼时请注意礼仪</string>
+    <string name="app_welcome_title">欢迎使用巡礼地图</string>
+    <string name="feature_map_title">全球圣地地图</string>
+    <string name="feature_map_detail">随缩放逐级揭示 5 万+ 个巡礼点位与剧照</string>
+    <string name="feature_search_title">本地极速搜索</string>
+    <string name="feature_search_detail">作品、地点、城市一处直达，无需等待</string>
+    <string name="feature_community_title">社区共建</string>
+    <string name="feature_community_detail">数据来自 anitabi.cn，欢迎补充与修正</string>
+    <string name="welcome_cc_note">内容遵循 CC BY-NC-SA 4.0 协议 · 截图版权归原作品所有</string>
+    <string name="about_license_body">本应用内容遵循 CC BY-NC-SA 4.0 协议共享。用户投稿内容也将遵循此协议。截图与作品名版权归原权利方所有，仅用于场景对照。数据来自 anitabi.cn 社区共建。</string>
+    <string name="etiquette_body">此地标为学校、图书馆等日常使用中的场所。巡礼时请不要进入非公开区域、不要拍摄学生与在场人员、保持安静并遵守当地规定。因巡礼者行为不当，部分圣地已对参观关闭 —— 请让巡礼成为受欢迎的事。</string>
+    <string name="view_etiquette_guide">查看巡礼礼仪指南</string>
+    <string name="set_default_links">设为默认打开 anitabi.cn 链接 ›</string>
+    <string name="camera_permission_needed">需要相机权限才能进行对比拍摄</string>
+    <string name="capture_failed">拍摄失败</string>
+    <string name="cutout_mode">合影</string>
+    <string name="full_image_mode">整图</string>
+    <string name="contributors_thanks">感谢 %1$s 等 %2$d 位巡礼者的贡献</string>
+    <string name="work_pilgrimage_spot">《%1$s》的巡礼点</string>
+    <string name="ungrouped">未分组</string>
+    <string name="cutout_model_downloading">正在下载 AI 抠图模型… %1$d%%</string>
+    <string name="isnet_experiment_title">AI 抠图增强(实验性)</string>
+    <string name="isnet_experiment_detail">打开后立即经 Wi-Fi 下载模型,进度显示在下方。默认关闭;标准抠图不受影响。</string>
+    <string name="loading_reference">正在加载参考图…</string>
+    <string name="reference_load_failed">参考图加载失败</string>
+    <string name="extracting_subject">正在抠图…</string>
+    <string name="a11y_reset_north">地图回正北</string>
+    <string name="a11y_my_location">我的位置</string>
+    <string name="a11y_map_layers">地图图层</string>
+    <string name="a11y_random_work">随机作品</string>
+    <string name="a11y_shutter">拍摄</string>
+    <string name="a11y_peek">按住隐藏参考图</string>
+    <string name="isnet_status_preparing">正在检查需要下载的内容…</string>
+    <string name="isnet_status_waiting_wifi">等待 Wi-Fi 后下载模型</string>
+    <string name="isnet_action_use_mobile_data">用移动数据下载</string>
+    <string name="isnet_status_downloading">下载中 %1$d%%（%2$.1f / %3$.1f MB）</string>
+    <string name="isnet_status_ready">已就绪 · 运行于 %1$s</string>
+    <string name="isnet_status_failed">下载失败：%1$s</string>
+    <string name="isnet_status_unavailable">此设备不支持，将使用标准抠图</string>
+
+    <!-- 巡礼记录（已完成地标；本仓库自有功能） -->
+    <string name="visited">已完成</string>
+    <string name="a11y_mark_visited">标记为已完成</string>
+    <string name="a11y_unmark_visited">取消已完成</string>
+    <string name="visited_progress">已完成 %1$d/%2$d</string>
+    <string name="visit_filter_all">全部地标</string>
+    <string name="visit_filter_visited">只看已完成</string>
+    <string name="visit_filter_unvisited">只看未完成</string>
+    <string name="pilgrimage_log">巡礼记录</string>
+    <string name="pilgrimage_log_summary">已完成 %1$d 处 · %2$d 部作品</string>
+    <string name="pilgrimage_log_empty">还没有已完成的地标。在地标卡片上点 ✓ 即可记录。</string>
+    <string name="pilgrimage_log_orphans">另有 %1$d 处已完成的地标已不在数据集中</string>
+
+    <!-- 作品分类 -->
+    <string name="cat_game">游戏</string>
+    <string name="cat_theatrical">剧场版</string>
+    <string name="cat_film">电影</string>
+    <string name="cat_manga_series">漫画系列</string>
+    <string name="cat_manga">漫画</string>
+    <string name="cat_novel_series">小说系列</string>
+    <string name="cat_novel">小说</string>
+    <string name="cat_jdrama">日剧</string>
+    <string name="cat_cdrama">华语剧</string>
+    <string name="cat_western_drama">欧美剧</string>
+    <string name="cat_tv_drama">电视剧</string>
+    <string name="cat_music">音乐</string>
+    <string name="cat_stage">演出</string>
+    <string name="cat_artbook">画集</string>
+    <string name="cat_expansion">扩展包</string>
+    <string name="cat_other">其他</string>
+</resources>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 应用自有的成句文案（段落、提示、无障碍标签；英文默认）。本项目独立撰写与维护。
+     通用短标签在 strings_anitabi.xml。`name` 是稳定的代码接口,改文案不要改 name;
+     占位符的个数与顺序必须与 zh/ja 两份一致。 -->
+<resources>
+    <string name="app_name" translatable="false">巡礼地图</string>
+    <string name="data_load_failed">Couldn’t load pilgrimage data. Please check your network.</string>
+    <string name="image_load_failed">Couldn’t load the image</string>
+    <string name="location_permission_denied">Location permission denied — you can enable it in system settings</string>
+    <string name="oss_licenses_title">Open-source licenses</string>
+    <string name="search_placeholder">Search works / places / cities</string>
+    <string name="nearby_sanctuaries">Nearby sanctuaries</string>
+    <string name="enable_location_prompt">Turn on location to see nearby spots</string>
+    <string name="location_privacy_note">Coarse location only while in use; no tracking</string>
+    <string name="no_results">No matching results</string>
+    <string name="marked_location">Marked location</string>
+    <string name="upload_screenshot">Add a screenshot ›</string>
+    <string name="etiquette_warning_banner">This is a school/library — please mind pilgrimage etiquette</string>
+    <string name="app_welcome_title">Welcome to Junrei Map</string>
+    <string name="feature_map_title">Global sanctuary map</string>
+    <string name="feature_map_detail">50,000+ spots and screenshots revealed as you zoom</string>
+    <string name="feature_search_title">Instant local search</string>
+    <string name="feature_search_detail">Works, places and cities in one place, instantly</string>
+    <string name="feature_community_title">Community-built</string>
+    <string name="feature_community_detail">Data from anitabi.cn — contributions welcome</string>
+    <string name="welcome_cc_note">Content under CC BY-NC-SA 4.0 · Screenshots © original works</string>
+    <string name="about_license_body">Content in this app is shared under CC BY-NC-SA 4.0; user contributions follow the same license. Screenshots and work titles belong to their rights holders and are used for scene comparison only. Data comes from the anitabi.cn community.</string>
+    <string name="etiquette_body">This spot is a school, library or other place in daily use. Please stay out of non-public areas, do not photograph students or people present, keep quiet and follow local rules. Some sanctuaries have closed to visitors because of bad behavior — let pilgrimage stay welcome.</string>
+    <string name="view_etiquette_guide">View etiquette guide</string>
+    <string name="set_default_links">Open anitabi.cn links by default ›</string>
+    <string name="camera_permission_needed">Camera permission is needed for comparison shots</string>
+    <string name="capture_failed">Capture failed</string>
+    <string name="cutout_mode">Together</string>
+    <string name="full_image_mode">Full image</string>
+    <string name="contributors_thanks">Thanks to %1$s and %2$d contributors</string>
+    <string name="work_pilgrimage_spot">A pilgrimage spot in “%1$s”</string>
+    <string name="ungrouped">Ungrouped</string>
+    <string name="cutout_model_downloading">Downloading AI cutout model… %1$d%%</string>
+    <string name="isnet_experiment_title">Enhanced AI cutout (experimental)</string>
+    <string name="isnet_experiment_detail">Downloads a model over Wi-Fi as soon as you turn this on; progress shows below. Off by default — the standard cutout works either way.</string>
+    <string name="loading_reference">Loading reference…</string>
+    <string name="reference_load_failed">Reference image unavailable</string>
+    <string name="extracting_subject">Cutting out subject…</string>
+    <string name="a11y_reset_north">Reset map to north</string>
+    <string name="a11y_my_location">My location</string>
+    <string name="a11y_map_layers">Map layers</string>
+    <string name="a11y_random_work">Random work</string>
+    <string name="a11y_shutter">Take photo</string>
+    <string name="a11y_peek">Hold to hide the overlay</string>
+    <string name="isnet_status_preparing">Checking what needs to be downloaded…</string>
+    <string name="isnet_status_waiting_wifi">Waiting for Wi-Fi to download the model</string>
+    <string name="isnet_action_use_mobile_data">Use mobile data</string>
+    <string name="isnet_status_downloading">Downloading %1$d%% (%2$.1f / %3$.1f MB)</string>
+    <string name="isnet_status_ready">Ready · runs on %1$s</string>
+    <string name="isnet_status_failed">Download failed: %1$s</string>
+    <string name="isnet_status_unavailable">Not supported on this device; the standard cutout is used</string>
+
+    <!-- 巡礼记录（已完成地标；本仓库自有功能） -->
+    <string name="visited">Visited</string>
+    <string name="a11y_mark_visited">Mark as visited</string>
+    <string name="a11y_unmark_visited">Unmark visited</string>
+    <string name="visited_progress">%1$d/%2$d visited</string>
+    <string name="visit_filter_all">All spots</string>
+    <string name="visit_filter_visited">Visited only</string>
+    <string name="visit_filter_unvisited">Unvisited only</string>
+    <string name="pilgrimage_log">Pilgrimage log</string>
+    <string name="pilgrimage_log_summary">Spots visited: %1$d · Titles: %2$d</string>
+    <string name="pilgrimage_log_empty">No visited spots yet. Tap ✓ on a spot card to mark it.</string>
+    <string name="pilgrimage_log_orphans">Spots no longer in the dataset: %1$d</string>
+
+    <!-- 作品分类(g.json 的 cat,Bangumi 平台分类;TV / OVA / WEB 等通用写法不翻译) -->
+    <string name="cat_game">Game</string>
+    <string name="cat_theatrical">Movie</string>
+    <string name="cat_film">Live-action film</string>
+    <string name="cat_manga_series">Manga series</string>
+    <string name="cat_manga">Manga</string>
+    <string name="cat_novel_series">Novel series</string>
+    <string name="cat_novel">Novel</string>
+    <string name="cat_jdrama">Japanese drama</string>
+    <string name="cat_cdrama">Chinese drama</string>
+    <string name="cat_western_drama">Western drama</string>
+    <string name="cat_tv_drama">TV drama</string>
+    <string name="cat_music">Music</string>
+    <string name="cat_stage">Stage</string>
+    <string name="cat_artbook">Art book</string>
+    <string name="cat_expansion">Expansion</string>
+    <string name="cat_other">Other</string>
+</resources>

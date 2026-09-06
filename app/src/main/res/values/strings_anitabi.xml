@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  界面文案（英文默认）。本文件由本项目独立撰写与维护；`name` 是稳定的代码接口，
+  改文案不要改 name。占位符（%1$s 等）的个数与顺序必须与 zh/ja 两份一致。
+-->
+<resources>
+    <plurals name="n_spots">
+        <item quantity="one">%d spot</item>
+        <item quantity="other">%d spots</item>
+    </plurals>
+    <plurals name="n_photos">
+        <item quantity="one">%d photo</item>
+        <item quantity="other">%d photos</item>
+    </plurals>
+    <string name="cc_by_nc_sa_4_0_screenshots">CC BY-NC-SA 4.0 · Screenshots are copyrighted by their original works</string>
+    <string name="google_navigation">Google Navigation</string>
+    <string name="character_only">Character only</string>
+    <string name="work">Work</string>
+    <string name="browse_works">Browse works</string>
+    <string name="save">Save</string>
+    <string name="save_failed">Save Failed</string>
+    <string name="fix_coordinates">Fix Coordinates</string>
+    <string name="compare_image">Compare Image</string>
+    <string name="expand_all">Expand All</string>
+    <string name="collapse_all">Collapse All</string>
+    <string name="about">About</string>
+    <string name="close">Close</string>
+    <string name="share">Share</string>
+    <string name="photo_pins">Photo Pins</string>
+    <string name="satellite">Satellite</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_spot_here">Add Spot Here</string>
+    <string name="open_in_web_version">Open in Web Version</string>
+    <string name="maps">Maps</string>
+    <string name="spots">Spots</string>
+    <string name="city">City</string>
+    <string name="expand_or_collapse_all_groups">Expand or Collapse All Groups</string>
+    <string name="pilgrimage_data_feedback">Pilgrimage Data Feedback</string>
+    <string name="pilgrimage_etiquette">Pilgrimage etiquette</string>
+    <string name="saved_to_photos">Saved to Photos</string>
+    <string name="coordinates_copied">Coordinates Copied</string>
+    <string name="get_started">Get Started</string>
+    <string name="copy_coordinates">Copy Coordinates</string>
+    <string name="by_group">By group</string>
+    <string name="by_episode">By episode</string>
+    <string name="new_label">New</string>
+    <string name="more">More</string>
+    <string name="updated_n">Updated %s</string>
+    <string name="updated">Updated</string>
+    <string name="recently_viewed">Recently Viewed</string>
+    <string name="standard">Standard</string>
+    <string name="etiquette">Etiquette</string>
+    <string name="clear">Clear</string>
+    <string name="popular">Popular</string>
+    <string name="popular_cities">Popular cities</string>
+    <string name="spots_nearest_to_this_pin">Spots nearest to this pin</string>
+    <string name="wikipedia">Wikipedia</string>
+    <string name="moegirl">Moegirl</string>
+    <string name="street">Street</string>
+    <string name="back">Back</string>
+    <string name="no_screenshot_yet">No screenshot yet</string>
+    <string name="retake">Retake</string>
+    <string name="watch_welcome_screen_again">Watch Welcome Screen Again</string>
+    <string name="retry">Retry</string>
+    <string name="this_links_content_doesnt_exist_or_has">This link’s content doesn’t exist or has been removed</string>
+</resources>

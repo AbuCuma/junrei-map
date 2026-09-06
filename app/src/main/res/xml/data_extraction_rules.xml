@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- API 31+ 的云备份/设备迁移规则。同 backup_rules.xml:只带走偏好与巡礼记录,
+     抠图运行时缓存(可重新下载)不进备份/迁移。 -->
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="sharedpref" path="." />
+        <include domain="file" path="pilgrimage_log.json" />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="sharedpref" path="." />
+        <include domain="file" path="pilgrimage_log.json" />
+    </device-transfer>
+</data-extraction-rules>

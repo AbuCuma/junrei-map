@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "artifacts": {
+    "isnet_w8a8.onnx": {
+      "url": "https://github.com/AbuCuma/anitabi-cutout-runtime/releases/download/v1/isnet_w8a8.onnx",
+      "sha256": "1cb409a1e3d641895ed7ddc6a7b7ba36027f144590a6c53b6ae53ab3e9649e29",
+      "size": 44424510
+    },
+    "libonnxruntime.so": {
+      "url": "https://github.com/AbuCuma/anitabi-cutout-runtime/releases/download/v1/libonnxruntime.so",
+      "sha256": "f1caf5448b86fb5ab6584f26c219786dc3c807d20b2bc02667782c2dd3c7a32c",
+      "size": 23990744
+    }
+  }
+}

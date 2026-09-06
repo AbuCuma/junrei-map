@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UI 文言（日本語）。本プロジェクトが独自に執筆・保守。name は変更しない。プレースホルダーは既定（英語）版と一致させる。 -->
+<resources>
+    <plurals name="n_spots">
+        <item quantity="other">%d か所</item>
+    </plurals>
+    <plurals name="n_photos">
+        <item quantity="other">%d 枚</item>
+    </plurals>
+    <string name="cc_by_nc_sa_4_0_screenshots">CC BY-NC-SA 4.0 · スクリーンショットの著作権は原作品に帰属します</string>
+    <string name="google_navigation">Google でナビ</string>
+    <string name="character_only">キャラクターのみ</string>
+    <string name="work">作品</string>
+    <string name="browse_works">作品を見る</string>
+    <string name="save">保存</string>
+    <string name="save_failed">保存に失敗しました</string>
+    <string name="fix_coordinates">座標を修正</string>
+    <string name="compare_image">比較画像を作成</string>
+    <string name="expand_all">すべて展開</string>
+    <string name="collapse_all">すべて折りたたむ</string>
+    <string name="about">アプリについて</string>
+    <string name="close">閉じる</string>
+    <string name="share">共有</string>
+    <string name="photo_pins">写真ピン</string>
+    <string name="satellite">衛星</string>
+    <string name="cancel">キャンセル</string>
+    <string name="add_spot_here">ここに地標を追加</string>
+    <string name="open_in_web_version">Web版で開く</string>
+    <string name="maps">マップ</string>
+    <string name="spots">スポット</string>
+    <string name="city">都市</string>
+    <string name="expand_or_collapse_all_groups">すべてのグループを展開または折りたたむ</string>
+    <string name="pilgrimage_data_feedback">巡礼データのフィードバック</string>
+    <string name="pilgrimage_etiquette">巡礼マナー</string>
+    <string name="saved_to_photos">アルバムに保存しました</string>
+    <string name="coordinates_copied">座標をコピーしました</string>
+    <string name="get_started">はじめる</string>
+    <string name="copy_coordinates">座標をコピー</string>
+    <string name="by_group">グループ別</string>
+    <string name="by_episode">話数別</string>
+    <string name="new_label">新規収録</string>
+    <string name="more">その他</string>
+    <string name="updated_n">更新日: %s</string>
+    <string name="updated">最近更新</string>
+    <string name="recently_viewed">最近見た作品</string>
+    <string name="standard">標準</string>
+    <string name="etiquette">マナー注意</string>
+    <string name="clear">クリア</string>
+    <string name="popular">人気</string>
+    <string name="popular_cities">人気の都市</string>
+    <string name="spots_nearest_to_this_pin">この地点に近い巡礼スポット</string>
+    <string name="wikipedia">ウィキペディア</string>
+    <string name="moegirl">萌娘百科</string>
+    <string name="street">ストリート</string>
+    <string name="back">戻る</string>
+    <string name="no_screenshot_yet">画面がまだありません</string>
+    <string name="retake">撮り直す</string>
+    <string name="watch_welcome_screen_again">ようこそ画面をもう一度見る</string>
+    <string name="retry">再試行</string>
+    <string name="this_links_content_doesnt_exist_or_has">リンク先のコンテンツが存在しないか、削除されています</string>
+</resources>
