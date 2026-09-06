@@ -130,6 +130,8 @@ class CutoutEngine(
             }
         }
         warmUp()
+        // ML Kit 模块是 GMS 按需下载的可选模块,先确保装好(首次要等下载)。装不上就不抠图。
+        if (!SubjectExtractor.ensureModuleInstalled(context)) return null
         // ML Kit 兜底同样要**移出主线程**。`SubjectExtractor.finish()` 是全图像素运算
         // (getPixels ×2、MatteMath 全像素拉伸 + flood fill、createScaledBitmap、setPixels),
         // 而 ISNet 默认是关的 —— 这条兜底才是绝大多数用户实际走的路径。

@@ -36,6 +36,11 @@
         <!-- ISNet-Anime 的 QNN HTP 路径:FastRPC 桩会 dlopen /vendor 下的 libcdsprpc.so(非高通设备忽略)。 -->
         <uses-native-library android:name="libcdsprpc.so" android:required="false" />
 
+        <!-- Google Maps SDK 的要求(targetSdk ≥ 28):GMS 侧的 Maps 动态模块(旧渲染器)仍引用 org.apache.http.*,
+             不声明的话在 Play 服务未更新到新渲染器的设备上启动即崩
+             (实测:刚 wipe 的模拟器 GMS 25.08,NoClassDefFoundError: org.apache.http.ProtocolVersion)。 -->
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
         <!-- Google Maps API key(来自 local.properties;未引入 secrets 插件前由构建脚本手动注入)。 -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"

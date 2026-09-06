@@ -22,9 +22,9 @@ shots, dropped pins — behave the same way as in the iOS app.
 
 To learn more about Anitabi and its pilgrimage data, visit [anitabi.cn](https://anitabi.cn).
 
-> **Status: v0.1 released**
+> **Status: released**
 >
-> The APK is on the [Releases](../../releases) page; the source is under the Apache License 2.0.
+> The latest APK is on the [Releases](../../releases) page; the source is under the Apache License 2.0.
 
 ## What's different on Android
 

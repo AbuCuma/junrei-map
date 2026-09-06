@@ -18,9 +18,9 @@
 
 想进一步了解 Anitabi 和圣地巡礼数据，可以访问 [anitabi.cn](https://anitabi.cn)。
 
-> **状态：已发布 v0.1**
+> **状态：已发布**
 >
-> 安装包在 [Releases](../../releases) 页面，源代码以 Apache License 2.0 开源。
+> 最新安装包在 [Releases](../../releases) 页面，源代码以 Apache License 2.0 开源。
 
 ## Android 版有什么不一样
 
