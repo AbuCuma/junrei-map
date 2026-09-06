@@ -18,10 +18,9 @@
 
 想进一步了解 Anitabi 和圣地巡礼数据，可以访问 [anitabi.cn](https://anitabi.cn)。
 
-> **状态：发布前**
+> **状态：已发布 v0.1**
 >
-> 项目代码已以 Apache License 2.0 开源并可以正常构建，目前还没有正式发布的安装包。
-> 首个 APK 发布后会出现在 [Releases](../../releases) 页面。
+> 安装包在 [Releases](../../releases) 页面，源代码以 Apache License 2.0 开源。
 
 ## Android 版有什么不一样
 
@@ -76,9 +75,7 @@
 * Android 10（API 29）及以上
 * 设备需要支持 Google Play 服务，用于地图底图与定位
 
-正式版本发布后：
-
-1. 前往 [Releases](../../releases) 下载最新 APK。
+1. 前往 [Releases](../../releases) 下载最新的 `junrei-map-v*.apk`。
 2. 如有需要，可以按照发布说明核对 APK 的 SHA-256。
 3. 打开 APK 并按照 Android 系统提示完成安装。
 

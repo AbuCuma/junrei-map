@@ -22,10 +22,9 @@ shots, dropped pins — behave the same way as in the iOS app.
 
 To learn more about Anitabi and its pilgrimage data, visit [anitabi.cn](https://anitabi.cn).
 
-> **Status: pre-release**
+> **Status: v0.1 released**
 >
-> The source is released under the Apache License 2.0 and builds today, but no installable package
-> has been published yet. The first APK will appear on the [Releases](../../releases) page.
+> The APK is on the [Releases](../../releases) page; the source is under the Apache License 2.0.
 
 ## What's different on Android
 
@@ -85,9 +84,7 @@ pilgrimage use.
 * Android 10 (API 29) or newer
 * Google Play services, used for the map base layer and location
 
-Once a release is published:
-
-1. Download the latest APK from [Releases](../../releases).
+1. Download the latest `junrei-map-v*.apk` from [Releases](../../releases).
 2. If you like, check the APK's SHA-256 against the release notes.
 3. Open the APK and follow the Android prompts to install it.
 
