@@ -98,6 +98,16 @@ interface AnitabiPrefs {
 
     /** 实验性 AI 抠图(ISNet)开关。默认关:开启后才允许下载模型/原生库并启用。 */
     var isnetExperimentEnabled: Boolean
+
+    // 检查更新(GitHub Releases;本仓库自有)。默认开,≤ 每 24 小时向 GitHub 查一次。
+    var updateAutoCheckEnabled: Boolean
+    /** 上次**成功**检查的时间(epoch ms);失败不写,下次启动重试。 */
+    var updateLastCheckedAt: Long
+    /** 上次查到的最新 tag / Release 页,用于 24 小时内重启时先把结果摆出来。 */
+    var updateLatestTag: String?
+    var updateLatestUrl: String?
+    /** 用户点过「忽略此版本」的 tag;出现更新的 tag 自然失效。 */
+    var updateSkippedTag: String?
 }
 
 /** 视口的最小表达（相当于 MKCoordinateRegion。不把 gms 类型放出边界之外）。 */

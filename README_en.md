@@ -88,6 +88,9 @@ pilgrimage use.
 2. If you like, check the APK's SHA-256 against the release notes.
 3. Open the APK and follow the Android prompts to install it.
 
+When a newer version exists the home screen shows a notice that opens the download page. Tools like
+[Obtainium](https://github.com/ImranR98/Obtainium) can also subscribe to this repository's Releases.
+
 If you want to build the app yourself, see the [developer documentation](docs/README.md).
 
 ## Permissions and privacy
@@ -111,11 +114,12 @@ In normal use the app connects to:
 
 * **the anitabi.cn CDN** — pilgrimage data and images, cached on the device
 * **Google Maps** — the map base layer
+* **GitHub** — at most once a day it asks for this repository's latest release so it can tell you
+  about new versions. Nothing beyond the IP address any ordinary connection carries is sent; you
+  can turn this off on the About page
 
-If you enable the experimental **AI cutout**, the model file is downloaded once from GitHub. That
-means GitHub receives the IP address that any ordinary network connection carries.
-
-Leave the feature off and that download never happens.
+If you enable the experimental **AI cutout**, the model file is additionally downloaded once from
+GitHub; leave the feature off and that download never happens.
 
 ## Data and credits
 

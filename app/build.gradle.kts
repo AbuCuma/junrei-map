@@ -48,8 +48,8 @@ android {
         // 消除了 26-28 上「保存必失败」的整类问题。
         minSdk = 29
         targetSdk = 36
-        versionCode = 2
-        versionName = "0.1.1"
+        versionCode = 3
+        versionName = "0.2.0"
 
         // Maps API key 从 local.properties 的 MAPS_API_KEY 注入(绝不写进仓库)。
         manifestPlaceholders["MAPS_API_KEY"] = secret("MAPS_API_KEY") ?: ""

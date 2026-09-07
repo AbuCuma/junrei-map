@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -41,13 +42,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cn.anitabi.map.app.AppGraph
+import cn.anitabi.map.data.update.UpdateChecker
 import cn.anitabi.map.support.AnitabiWebLink
 import cn.anitabi.map.support.ExternalLinks
 import cn.anitabi.map.theme.LocalAnitabiPalette
@@ -79,14 +88,33 @@ fun AboutSheet(versionName: String, onDismiss: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 16.dp),
+                .heightIn(max = modalSheetMaxContentHeight())
+                .modalSheetScroll(),
         ) {
             Text(stringResource(R.string.app_name), color = palette.ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-            Text(
-                versionName,
-                color = palette.inkTertiary, fontSize = 12.sp,
-                fontFamily = FontFamily.Monospace,
+            // 版本 + 检查更新。状态与启动时的自动检查共用(UpdateChecker 只有一份)。
+            val graph = remember { AppGraph.get(context) }
+            val updateState by graph.updateChecker.state.collectAsStateWithLifecycle()
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    versionName,
+                    color = palette.inkTertiary, fontSize = 12.sp,
+                    fontFamily = FontFamily.Monospace,
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    stringResource(R.string.update_check),
+                    color = palette.accentFill, fontSize = 12.sp, fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable(enabled = updateState !is UpdateChecker.State.Checking) { graph.updateChecker.checkNow() }
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                )
+            }
+            UpdateStatusRow(
+                state = updateState,
+                onOpen = { url -> ExternalLinks.openInCustomTab(context, url) },
+                onRetry = { graph.updateChecker.checkNow() },
             )
             Spacer(Modifier.height(12.dp))
             Text(
@@ -127,8 +155,34 @@ fun AboutSheet(versionName: String, onDismiss: () -> Unit) {
                 )
             }
             Spacer(Modifier.height(12.dp))
+            // 自动检查更新(默认开;≤ 每 24 小时向 GitHub 查一次)
+            var autoCheckOn by remember { mutableStateOf(graph.prefs.updateAutoCheckEnabled) }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Column(Modifier.weight(1f)) {
+                    Text(
+                        stringResource(R.string.update_auto_check_title),
+                        color = palette.ink, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+                    )
+                    Text(
+                        stringResource(R.string.update_auto_check_detail),
+                        color = palette.inkTertiary, fontSize = 11.sp, lineHeight = 15.sp,
+                    )
+                }
+                Spacer(Modifier.width(12.dp))
+                Switch(
+                    checked = autoCheckOn,
+                    onCheckedChange = { on ->
+                        autoCheckOn = on
+                        graph.prefs.updateAutoCheckEnabled = on
+                    },
+                    colors = SwitchDefaults.colors(checkedTrackColor = palette.accentFill),
+                )
+            }
+            Spacer(Modifier.height(12.dp))
             // 实验性 AI 抠图开关(默认关;开启后进入对比拍摄页才会下载模型/原生库)
-            val graph = remember { AppGraph.get(context) }
             var isnetOn by remember { mutableStateOf(graph.prefs.isnetExperimentEnabled) }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -213,6 +267,42 @@ private val OSS_COMPONENTS = listOf(
         "https://github.com/googlemaps/android-maps-compose/blob/main/LICENSE",
 )
 
+/**
+ * 模态弹层里可滚内容的高度上限:屏高的 85%。
+ *
+ * 内容一旦长到接近整屏(小屏 + ISNet 状态行 + 更新行的关于页),M3 的 `ModalBottomSheet` 会在两个测量高度之间
+ * 来回跳 —— 真机录屏是 sheet 整体上下抖 ~40px 的闪烁(120Hz 的 S25 上肉眼可见)。
+ * 把内容高度封在整屏之下,sheet 的锚点就稳定了,内容靠自身的 verticalScroll 滚。
+ */
+@Composable
+private fun modalSheetMaxContentHeight(): Dp =
+    (LocalConfiguration.current.screenHeightDp * 0.85f).dp
+
+/**
+ * 模态弹层里的可滚内容:**不带过度滚动效果**,并把滚到底之后继续向上的余量吃掉。
+ *
+ * 真机(S25,120Hz)录屏:内容滚到底后手指继续上推,画面以 ~150ms 为周期上下抖 —— 内层
+ * `verticalScroll` 的拉伸过度滚动与 M3 sheet 自己的过度滚动叠在一起互相拉扯。内层不做过度滚动、
+ * 向上的余量也不再交给 sheet(sheet 已在最高档,给它只会触发它的过度滚动),向下的余量照常交出去
+ *(那是「拉到顶再拉就收起」的正常路径)。
+ */
+@Composable
+private fun Modifier.modalSheetScroll(): Modifier {
+    val swallowUpwardLeftover = remember {
+        object : NestedScrollConnection {
+            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset =
+                if (available.y < 0f) Offset(0f, available.y) else Offset.Zero
+
+            override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity =
+                if (available.y < 0f) Velocity(0f, available.y) else Velocity.Zero
+        }
+    }
+    return this
+        .nestedScroll(swallowUpwardLeftover)
+        .verticalScroll(rememberScrollState(), overscrollEffect = null)
+        .padding(horizontal = 24.dp, vertical = 16.dp)
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EtiquetteSheet(onDismiss: () -> Unit) {
@@ -226,8 +316,8 @@ fun EtiquetteSheet(onDismiss: () -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 16.dp),
+                .heightIn(max = modalSheetMaxContentHeight())
+                .modalSheetScroll(),
         ) {
             Text(stringResource(R.string.pilgrimage_etiquette), color = palette.warnInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(8.dp))
@@ -388,6 +478,41 @@ private fun IsnetStatusRow(
         CutoutEngine.State.Idle -> Text(
             stringResource(R.string.isnet_status_preparing),
             color = palette.inkTertiary, fontSize = 12.sp,
+        )
+    }
+}
+
+/** 检查更新的状态行(版本号下方)。Idle 不占位;其余每态都有可见反馈。 */
+@Composable
+private fun UpdateStatusRow(
+    state: UpdateChecker.State,
+    onOpen: (String) -> Unit,
+    onRetry: () -> Unit,
+) {
+    val palette = LocalAnitabiPalette.current
+    when (state) {
+        UpdateChecker.State.Idle -> Unit
+        UpdateChecker.State.Checking -> Text(
+            stringResource(R.string.update_checking),
+            color = palette.inkTertiary, fontSize = 12.sp,
+        )
+        UpdateChecker.State.UpToDate -> Text(
+            stringResource(R.string.update_up_to_date),
+            color = palette.inkTertiary, fontSize = 12.sp,
+        )
+        is UpdateChecker.State.Available -> StatusWithAction(
+            text = stringResource(R.string.update_available, state.release.tag),
+            action = stringResource(R.string.update_open_releases),
+            onAction = { onOpen(state.release.htmlUrl) },
+        )
+        is UpdateChecker.State.Failed -> StatusWithAction(
+            text = if (state.rateLimited) {
+                stringResource(R.string.update_rate_limited)
+            } else {
+                stringResource(R.string.update_failed, state.reason)
+            },
+            action = stringResource(R.string.retry),
+            onAction = onRetry,
         )
     }
 }

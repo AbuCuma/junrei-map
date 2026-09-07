@@ -1,16 +1,13 @@
 package cn.anitabi.map.ui.scene
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
-import com.google.android.gms.common.moduleinstall.InstallStatusListener
-import com.google.android.gms.common.moduleinstall.ModuleInstall
-import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
-import com.google.android.gms.common.moduleinstall.ModuleInstallStatusUpdate
+import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.segmentation.subject.SubjectSegmentation
 import com.google.mlkit.vision.segmentation.subject.SubjectSegmenterOptions
 import kotlin.coroutines.resume
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeoutOrNull
 
@@ -22,8 +19,17 @@ import kotlinx.coroutines.withTimeoutOrNull
  * 这里是 **ML Kit 路径与其他路径共用的收边**。面向二次元的 ISNet-Anime 路径由
  * [cn.anitabi.map.ui.scene.cutout.CutoutEngine] 负责前段(生成 alpha),在 [fromAlpha] 汇合。
  *
- * unbundled 模型由 GMS 在首次使用时下载。未就绪或设备不支持时返回 null,
- * 调用方降级为纯幽灵叠加(绝不因此崩溃)。
+ * ML Kit 的分割模块是 unbundled 的,由 Google Play 服务按需下载(manifest 的
+ * `com.google.mlkit.vision.DEPENDENCIES` 让它在装 App 时就开始下,但不保证到位)。模块没到时
+ * `process()` 以 `MlKitException.UNAVAILABLE` 失败,ML Kit 自己会去请求下载 —— 这里做的是**等它一会儿再试**
+ * ([UNAVAILABLE_RETRIES] × [UNAVAILABLE_RETRY_DELAY_MS]),而不是把失败吞成「没有抠图」:那正是
+ * 首次使用时抠图开关不出现的原因。
+ *
+ * **不要**用 `ModuleInstall` API 去查/装这个模块:16.0.0-beta1 的组件注册在 R8 全程序优化之后是坏的,
+ * `areModulesAvailable(segmenter)` 在 release 里同步抛 NPE(真机实测,debug 正常),给它补 keep 规则
+ * 又会让 `MlKitInitProvider` 启动即崩。v0.1.1 就是因此在正式版里没有抠图开关。
+ *
+ * 未就绪或设备不支持时返回 null,调用方降级为纯幽灵叠加(绝不因此崩溃)。
  */
 object SubjectExtractor {
 
@@ -46,58 +52,25 @@ object SubjectExtractor {
 
     private const val TAG = "SubjectExtractor"
 
-    /** 等 GMS 把可选模块装好的上限。装不完就先按「没有抠图」用,下次进来再等。 */
-    private const val MODULE_INSTALL_TIMEOUT_MS = 90_000L
+    /** 模块未就绪时的重试:每 3 秒一次,最多 20 次(≈1 分钟,够 Play 服务把几 MB 的模块下完)。 */
+    private const val UNAVAILABLE_RETRIES = 20
+    private const val UNAVAILABLE_RETRY_DELAY_MS = 3_000L
 
-    /**
-     * ML Kit 的主体分割是 unbundled 模块,由 Google Play 服务按需下载。manifest 里的
-     * `com.google.mlkit.vision.DEPENDENCIES` 只是「安装应用时顺便下」的提示,并不保证 ——
-     * 真机上首次打开拍摄页时模块常常还没到,`process()` 立刻以 UNAVAILABLE 失败,而这里此前把失败
-     * 吞成 null,于是抠图开关**永远不出现**(iOS 用的 Vision 是系统自带的,没有这一步)。
-     * 所以先显式请求安装并等它装完,再去分割。已装好时立即返回。
-     */
-    suspend fun ensureModuleInstalled(context: Context): Boolean {
-        val client = ModuleInstall.getClient(context)
-        val installed = withTimeoutOrNull(10_000L) {
-            suspendCancellableCoroutine<Boolean?> { cont ->
-                client.areModulesAvailable(segmenter)
-                    .addOnSuccessListener { cont.resume(it.areModulesAvailable()) }
-                    .addOnFailureListener { cont.resume(null) }
-            }
-        }
-        if (installed == true) return true
-        val result = withTimeoutOrNull(MODULE_INSTALL_TIMEOUT_MS) {
-            suspendCancellableCoroutine<Boolean> { cont ->
-                val listener = object : InstallStatusListener {
-                    override fun onInstallStatusUpdated(update: ModuleInstallStatusUpdate) {
-                        when (update.installState) {
-                            ModuleInstallStatusUpdate.InstallState.STATE_COMPLETED -> if (cont.isActive) cont.resume(true)
-                            ModuleInstallStatusUpdate.InstallState.STATE_FAILED,
-                            ModuleInstallStatusUpdate.InstallState.STATE_CANCELED -> if (cont.isActive) cont.resume(false)
-                            else -> Unit
-                        }
-                    }
-                }
-                val request = ModuleInstallRequest.newBuilder().addApi(segmenter).setListener(listener).build()
-                client.installModules(request)
-                    .addOnSuccessListener { response ->
-                        // 已经装好的话不会再有 listener 回调。
-                        if (response.areModulesAlreadyInstalled() && cont.isActive) cont.resume(true)
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w(TAG, "module install request failed: $e")
-                        if (cont.isActive) cont.resume(false)
-                    }
-                cont.invokeOnCancellation { client.unregisterListener(listener) }
-            }
-        }
-        if (result != true) Log.w(TAG, "subject segmentation module not ready (result=$result)")
-        return result == true
-    }
+    /** ML Kit 的 Task 不该无限期不回调;超时按一次失败处理并留日志。 */
+    private const val SEGMENT_TIMEOUT_MS = 30_000L
 
     /** 用 ML Kit 抠前景 + 收边(MatteMath)。失败返回 null(降级不算错误)。 */
     suspend fun extract(source: Bitmap): Cutout? {
-        val foreground = segment(source) ?: return null
+        var attempt = 0
+        var foreground: Bitmap?
+        while (true) {
+            val outcome = segmentOnce(source)
+            foreground = outcome.bitmap
+            if (foreground != null || !outcome.moduleUnavailable || attempt >= UNAVAILABLE_RETRIES) break
+            attempt++
+            delay(UNAVAILABLE_RETRY_DELAY_MS)
+        }
+        foreground ?: return null
         val width = foreground.width
         val height = foreground.height
         if (width == 0 || height == 0) return null
@@ -137,17 +110,26 @@ object SubjectExtractor {
         return Cutout(bitmap = refined, coverage = opaque.toFloat() / pixels.size, engine = engine)
     }
 
-    private suspend fun segment(source: Bitmap): Bitmap? =
-        suspendCancellableCoroutine { continuation ->
-            segmenter.process(InputImage.fromBitmap(source, 0))
-                .addOnSuccessListener { result ->
-                    continuation.resume(result.foregroundBitmap)
-                }
-                .addOnFailureListener { e ->
-                    // 模块未装好(MlKitException UNAVAILABLE)等情况降级为不抠图,但要留下痕迹 ——
-                    // 此前这里连日志都没有,「开关不出现」只能靠猜。不含图片内容与用户数据。
-                    Log.w(TAG, "segmentation failed: $e")
-                    continuation.resume(null)
-                }
+    private class SegmentOutcome(val bitmap: Bitmap?, val moduleUnavailable: Boolean)
+
+    private suspend fun segmentOnce(source: Bitmap): SegmentOutcome {
+        val outcome = withTimeoutOrNull(SEGMENT_TIMEOUT_MS) {
+            suspendCancellableCoroutine<SegmentOutcome> { continuation ->
+                segmenter.process(InputImage.fromBitmap(source, 0))
+                    .addOnSuccessListener { result ->
+                        continuation.resume(SegmentOutcome(result.foregroundBitmap, moduleUnavailable = false))
+                    }
+                    .addOnFailureListener { e ->
+                        // 模块未装好(UNAVAILABLE)之外的失败也留下痕迹 —— 此前这里连日志都没有,
+                        // 「开关不出现」只能靠猜。不含图片内容与用户数据。
+                        val code = (e as? MlKitException)?.errorCode
+                        Log.w(TAG, "segmentation failed (code=$code): $e")
+                        continuation.resume(SegmentOutcome(null, moduleUnavailable = code == MlKitException.UNAVAILABLE))
+                    }
+            }
         }
+        if (outcome == null) Log.w(TAG, "segmentation did not return within ${SEGMENT_TIMEOUT_MS}ms")
+        // 超时同样当作「再等等」:真机上见过既不成功也不失败的 Task。
+        return outcome ?: SegmentOutcome(null, moduleUnavailable = true)
+    }
 }

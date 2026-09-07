@@ -25,6 +25,11 @@ private class FakePrefs : AnitabiPrefs {
     override var restoredDeepLink: String? = null
     override var hasCompletedOnboarding: Boolean = false
     override var isnetExperimentEnabled: Boolean = false
+    override var updateAutoCheckEnabled: Boolean = true
+    override var updateLastCheckedAt: Long = 0L
+    override var updateLatestTag: String? = null
+    override var updateLatestUrl: String? = null
+    override var updateSkippedTag: String? = null
 }
 
 class AnitabiStoreTest {

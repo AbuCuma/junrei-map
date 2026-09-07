@@ -57,7 +57,8 @@ shasum -a 256 app/build/outputs/apk/release/app-release.apk
 - [ ] **兼容性**:改过 SharedPreferences 键名、`pilgrimage_log.json` 格式或磁盘缓存文件名的话,
       视为破坏性变更并在 release notes 里说明(没有迁移机制)
 - [ ] **打 tag**:`git tag v<versionName> && git push origin v<versionName>`,等 Action 创建 Release,
-      再核对 Release 页上的 SHA-256 与签名证书指纹
+      再核对 Release 页上的 SHA-256 与签名证书指纹。tag **必须**是 `v` + `versionName`(`vX.Y.Z`),
+      客户端的检查更新按它与本机 `versionName` 比大小;不要用预发布(prerelease)Release 发正式版本,客户端会忽略它
 
 ## Bug 维护流程
 

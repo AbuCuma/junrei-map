@@ -87,7 +87,7 @@ tools/                离线脚本
 改动以下内容属于破坏性变更,必须显式说明并给迁移方案:
 
 - **SharedPreferences 键名**(`home.dataModified`、`map.baseStyle`、`map.isPhotoLayerVisible`、
-  `map.pointVisitFilter`、`map.restoredDeepLink`、`hasCompletedOnboarding`、`cutout.isnetExperimentEnabled` 等)。
+  `map.pointVisitFilter`、`map.restoredDeepLink`、`hasCompletedOnboarding`、`cutout.isnetExperimentEnabled`、`update.*` 等)。
   **没有迁移机制**,改名即静默丢用户设置。
 - **巡礼记录文件** `filesDir/pilgrimage_log.json` 的 JSON 契约(`version` / `visits[].{id,bangumiId,at}`)——
   这是用户自己的数据,解析要保持向前兼容。
@@ -153,7 +153,7 @@ macOS 上若默认 JDK 非 17,前面加 `JAVA_HOME=/opt/homebrew/opt/openjdk@17`
   这是运行时 `System.load` 原生库的唯一防线,任何一环都不能省。
 - **校验外部输入**:深链必须经 `MapDeepLink.parse`(scheme + host 白名单 + path 判定),
   不要新增绕过白名单的入口;外部 JSON 走 `AnitabiJsonParser` 的容错路径。
-- **不要记录敏感信息**。当前全库只有 4 条日志且不含坐标、URL 参数或用户数据,保持这个水位。
+- **不要记录敏感信息**。现有日志只记异常类名 / 状态码 / 耗时(抠图链路、拍摄页、地图点击),不含坐标、URL 参数或用户数据,保持这个水位。
   尤其不要打印精确定位、完整图片 URL 或 manifest 内容。
 - **保持权限最小**:仅 `INTERNET` / `CAMERA` / `ACCESS_COARSE_LOCATION` / `ACCESS_FINE_LOCATION`,
   定位仅前台。新增权限需要在说明里论证。

@@ -31,6 +31,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BrokenImage
 import androidx.compose.material.icons.outlined.HideImage
 import androidx.compose.material.icons.outlined.MoreHoriz
+import androidx.compose.material.icons.outlined.NewReleases
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -73,6 +74,7 @@ import cn.anitabi.map.data.model.BangumiLite
 import cn.anitabi.map.data.model.DistanceFormatter
 import cn.anitabi.map.data.model.LatLon
 import cn.anitabi.map.data.model.ScenePoint
+import cn.anitabi.map.data.update.ReleaseInfo
 import cn.anitabi.map.theme.ColorUtilities
 import cn.anitabi.map.theme.LocalAnitabiPalette
 import cn.anitabi.map.ui.components.workCategoryLabel
@@ -116,6 +118,10 @@ fun HomeSheet(
     /** 巡礼记录的入口（本仓库自有功能）:已完成地标数 / 作品数;为 0 时不显示该段。 */
     visitedSummary: Pair<Int, Int>,
     onOpenPilgrimageLog: () -> Unit,
+    /** 有新版本(且未被忽略)时非空;点卡片打开 Release 页。 */
+    availableUpdate: ReleaseInfo?,
+    onOpenUpdate: (ReleaseInfo) -> Unit,
+    onSkipUpdate: (ReleaseInfo) -> Unit,
     onRetryLoad: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
@@ -354,6 +360,9 @@ fun HomeSheet(
                 onSelectPoint = onSelectPoint,
                 visitedSummary = visitedSummary,
                 onOpenPilgrimageLog = onOpenPilgrimageLog,
+                availableUpdate = availableUpdate,
+                onOpenUpdate = onOpenUpdate,
+                onSkipUpdate = onSkipUpdate,
             )
         }
     }
@@ -518,6 +527,10 @@ private fun BrowseContent(
     onSelectPoint: (ScenePoint) -> Unit,
     visitedSummary: Pair<Int, Int>,
     onOpenPilgrimageLog: () -> Unit,
+    /** 有新版本(且未被忽略)时非空;点卡片打开 Release 页。 */
+    availableUpdate: ReleaseInfo?,
+    onOpenUpdate: (ReleaseInfo) -> Unit,
+    onSkipUpdate: (ReleaseInfo) -> Unit,
 ) {
     val palette = LocalAnitabiPalette.current
     val listState = rememberLazyListState()
@@ -532,6 +545,34 @@ private fun BrowseContent(
         store.lastVisitedBangumi?.let { last ->
             item { SectionHeader(stringResource(R.string.recently_viewed)) }
             item { WorkRow(last, onClick = { onSelectWork(last.id) }) }
+        }
+
+        // 新版本提示(GitHub Releases):点卡片去 Release 页下载;「忽略」后这个 tag 不再出现。
+        if (availableUpdate != null) {
+            item(key = "update") {
+                RowCard(onClick = { onOpenUpdate(availableUpdate) }) {
+                    Icon(
+                        Icons.Outlined.NewReleases,
+                        contentDescription = null,
+                        tint = palette.accentFill,
+                        modifier = Modifier.size(22.dp),
+                    )
+                    Spacer(Modifier.width(10.dp))
+                    Text(
+                        stringResource(R.string.update_home_card, availableUpdate.tag),
+                        color = palette.ink, fontSize = 14.sp,
+                        modifier = Modifier.weight(1f),
+                    )
+                    Text(
+                        stringResource(R.string.update_skip_version),
+                        color = palette.inkTertiary, fontSize = 12.sp,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable { onSkipUpdate(availableUpdate) }
+                            .padding(horizontal = 8.dp, vertical = 6.dp),
+                    )
+                }
+            }
         }
 
         // 巡礼记录(本仓库自有):有记录才出现,一张卡进列表页。

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.util.Log
 import android.net.Uri
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -213,6 +214,9 @@ fun SceneComparisonScreen(
             } catch (c: CancellationException) {
                 throw c
             } catch (t: Throwable) {
+                // 留一条日志:release 里 ML Kit 初始化曾同步抛异常,被这里吞掉后现象只是「没有抠图开关」,
+                // 没有任何线索。不含图片内容与用户数据。
+                Log.w("SceneComparison", "cutout failed: $t")
                 null
             }
             extracting = false

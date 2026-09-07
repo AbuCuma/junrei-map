@@ -85,4 +85,17 @@
     <string name="cat_artbook">Art book</string>
     <string name="cat_expansion">Expansion</string>
     <string name="cat_other">Other</string>
+
+    <!-- 检查更新(GitHub Releases;本仓库自有功能) -->
+    <string name="update_check">Check for updates</string>
+    <string name="update_checking">Checking for updates…</string>
+    <string name="update_up_to_date">You have the latest version</string>
+    <string name="update_available">New version %1$s is available</string>
+    <string name="update_open_releases">Get it</string>
+    <string name="update_skip_version">Skip</string>
+    <string name="update_failed">Couldn’t check for updates (%1$s)</string>
+    <string name="update_rate_limited">Couldn’t check for updates right now (GitHub rate limit) — try again later</string>
+    <string name="update_auto_check_title">Check for updates automatically</string>
+    <string name="update_auto_check_detail">Asks GitHub for the latest release at most once a day. Nothing but the request itself is sent.</string>
+    <string name="update_home_card">Version %1$s is available</string>
 </resources>

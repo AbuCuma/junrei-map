@@ -80,6 +80,10 @@ flowchart TD
 - **`LocationProvider.kt`**:FusedLocation,粗精度优先、仅前台;`startUpdates`/`stopUpdates` 由
   `RootScreen` 的生命周期观察者驱动。
 - **`data/model/AnitabiModels.kt`**:领域模型 + `AnitabiImage`(路径 → CDN URL 规则、`withPlan` 换档)。
+- **`data/update/`**:检查更新。`AppVersion`(可比较的版本号)与 `ReleaseInfo.parse`(GitHub Release JSON)是纯逻辑;
+  `UpdateChecker` 持一份 `StateFlow`(Idle / Checking / UpToDate / Available / Failed),启动时 ≤ 每 24h 一次 `checkIfDue()`,
+  关于页 `checkNow()`,两者共用。只检查、只提示:下载与安装交给浏览器,App 不申请安装权限。失败(含 GitHub 403 限流)
+  不写时间戳、不清缓存,与「已是最新」严格区分。
 - **`PilgrimageLog.kt` / `PilgrimageLogGroups.kt`**:用户自己的巡礼记录(本仓库自有功能,iOS 版没有)。
   与 `AnitabiStore` 分开 —— 那是只读数据集的容器,`apply()` 的快照纪律不该被用户状态搅进来;
   与 `AnitabiPrefs` 分开 —— 记录会长到几千条。落盘走 `support/AtomicWrite.kt`,`AppGraph.toggleVisited`
@@ -300,7 +304,7 @@ AnitabiDataLoader  →  AnitabiStore(Compose 状态) →  各 Composable 直接�
 
 | 载体 | 位置 | 内容 |
 |---|---|---|
-| SharedPreferences | 名为 `"anitabi"` | 数据基线时间戳、最近访问、底图样式、剧照图层开关、巡礼记录过滤模式、持久化深链、引导完成、ISNet 实验开关 |
+| SharedPreferences | 名为 `"anitabi"` | 数据基线时间戳、最近访问、底图样式、剧照图层开关、巡礼记录过滤模式、持久化深链、引导完成、ISNet 实验开关、检查更新(`update.*`:开关、上次成功时间、最新 tag/URL 缓存、忽略的 tag) |
 | 内部存储 | `filesDir/pilgrimage_log.json` | **巡礼记录**(用户标为「已完成」的地标:id / bangumiId / 时间戳)。owner 是 `data/PilgrimageLog.kt`(Compose 状态 + 原子写),进系统备份;损坏时改名为 `.corrupt-*` 保留 |
 | 磁盘缓存 | `cacheDir/anitabi-data/` | `g.json`、`g0…g6.json`、`bangumi-icons.json`、雪碧图 `.img` |
 | 内部存储 | `filesDir/cutout/` | 抠图运行时:`libonnxruntime.so`、QNN 库、ONNX 模型、`manifest.json`(24h TTL) |

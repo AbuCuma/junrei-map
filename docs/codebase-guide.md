@@ -25,6 +25,7 @@
 | 巡礼记录(已完成地标的存储 / 打卡按钮 / 行内打勾 / 图层过滤) | [`data/PilgrimageLog.kt`](../app/src/main/java/cn/anitabi/map/data/PilgrimageLog.kt) · 地标卡 `PointHeaderRow` · 作品卡行 · `MapControlStack` 菜单第三段 · 引擎 `MapEngine.visitPredicate` |
 | 巡礼记录列表(按作品聚类、Home 入口) | [`ui/log/PilgrimageLogSheet.kt`](../app/src/main/java/cn/anitabi/map/ui/log/PilgrimageLogSheet.kt) · 分组纯函数 [`data/PilgrimageLogGroups.kt`](../app/src/main/java/cn/anitabi/map/data/PilgrimageLogGroups.kt) · `SheetKey.PilgrimageLog` |
 | 关于页、欢迎页、礼仪提示 | [`ui/home/ModalSheets.kt`](../app/src/main/java/cn/anitabi/map/ui/home/ModalSheets.kt) |
+| 检查更新(GitHub Releases:版本比较、状态机、首页卡 / 关于页) | [`data/update/`](../app/src/main/java/cn/anitabi/map/data/update/) · Home 卡在 `HomeSheet`,关于页在 `ModalSheets.AboutSheet` |
 | 作品卡片 / 地标卡片 / 长按图钉卡片 | [`ui/work/WorkCardSheet.kt`](../app/src/main/java/cn/anitabi/map/ui/work/WorkCardSheet.kt) · [`ui/point/PointCardSheet.kt`](../app/src/main/java/cn/anitabi/map/ui/point/PointCardSheet.kt) · [`ui/point/DroppedPinSheet.kt`](../app/src/main/java/cn/anitabi/map/ui/point/DroppedPinSheet.kt) |
 | 全屏图片查看器 | [`ui/image/ImageViewer.kt`](../app/src/main/java/cn/anitabi/map/ui/image/ImageViewer.kt) |
 | 对比拍摄页与结果页 | [`ui/scene/SceneComparisonScreen.kt`](../app/src/main/java/cn/anitabi/map/ui/scene/SceneComparisonScreen.kt) |

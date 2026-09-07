@@ -10,6 +10,7 @@ import cn.anitabi.map.data.AnitabiPrefs
 import cn.anitabi.map.data.AnitabiStore
 import cn.anitabi.map.data.LocationProvider
 import cn.anitabi.map.data.PilgrimageLog
+import cn.anitabi.map.data.update.UpdateChecker
 import cn.anitabi.map.data.model.ScenePoint
 import cn.anitabi.map.support.ImageHostFallbackInterceptor
 import cn.anitabi.map.support.MapDeepLink
@@ -35,10 +36,12 @@ class AppGraph(context: Context) {
      * 带标识性 User-Agent:官方文档仓库 issue #86 的策略是「正确配置 UA + 人类
      * 频率很难超限」,okhttp 默认 UA 属匿名客户端,更易被 Cloudflare 标记。
      */
+    /** 安装的 versionName(UA、关于页、检查更新共用;BuildConfig 已关,只能问 PackageManager)。 */
+    val versionName: String = runCatching {
+        context.packageManager.getPackageInfo(context.packageName, 0).versionName
+    }.getOrNull() ?: "0"
+
     val okHttpClient: OkHttpClient = run {
-        val versionName = runCatching {
-            context.packageManager.getPackageInfo(context.packageName, 0).versionName
-        }.getOrNull() ?: "0"
         val userAgent = "AnitabiMap-Android/$versionName (Android ${android.os.Build.VERSION.SDK_INT})"
         OkHttpClient.Builder()
             .addInterceptor { chain ->
@@ -58,6 +61,9 @@ class AppGraph(context: Context) {
     )
 
     val store: AnitabiStore = AnitabiStore(loader = dataLoader, prefs = prefs)
+
+    /** 检查更新(GitHub Releases)。懒建:关于页与启动检查都经它,共享同一份状态。 */
+    val updateChecker: UpdateChecker by lazy { UpdateChecker(okHttpClient, prefs, versionName) }
 
     /** 巡礼记录（用户标为「已完成」的地标）。`RootScreen` 启动时 load,之后只经 [toggleVisited] 改。 */
     val pilgrimageLog: PilgrimageLog = PilgrimageLog(File(context.filesDir, PilgrimageLog.FILE_NAME))
@@ -169,5 +175,35 @@ private class SharedPrefsAnitabiPrefs(private val sp: SharedPreferences) : Anita
         get() = sp.getBoolean("cutout.isnetExperimentEnabled", false)
         set(value) {
             sp.edit().putBoolean("cutout.isnetExperimentEnabled", value).apply()
+        }
+
+    override var updateAutoCheckEnabled: Boolean
+        get() = sp.getBoolean("update.autoCheckEnabled", true)
+        set(value) {
+            sp.edit().putBoolean("update.autoCheckEnabled", value).apply()
+        }
+
+    override var updateLastCheckedAt: Long
+        get() = sp.getLong("update.lastCheckedAt", 0L)
+        set(value) {
+            sp.edit().putLong("update.lastCheckedAt", value).apply()
+        }
+
+    override var updateLatestTag: String?
+        get() = sp.getString("update.latestTag", null)
+        set(value) {
+            sp.edit().putString("update.latestTag", value).apply()
+        }
+
+    override var updateLatestUrl: String?
+        get() = sp.getString("update.latestUrl", null)
+        set(value) {
+            sp.edit().putString("update.latestUrl", value).apply()
+        }
+
+    override var updateSkippedTag: String?
+        get() = sp.getString("update.skippedTag", null)
+        set(value) {
+            sp.edit().putString("update.skippedTag", value).apply()
         }
 }

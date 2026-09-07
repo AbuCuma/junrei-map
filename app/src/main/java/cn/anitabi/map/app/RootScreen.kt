@@ -58,8 +58,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cn.anitabi.map.data.LatLonRegion
 import cn.anitabi.map.data.PilgrimageLogGroups
+import cn.anitabi.map.data.update.UpdateChecker
 import cn.anitabi.map.data.model.LatLon
 import cn.anitabi.map.data.model.ScenePoint
 import cn.anitabi.map.map.google.AnitabiMap
@@ -211,6 +213,10 @@ fun RootScreen() {
     }
     // 巡礼记录与数据集并行加载(幂等;几十 KB 的 IO,远早于用户能点到卡片)。
     LaunchedEffect(Unit) { pilgrimageLog.load() }
+    // 检查更新(≤ 每 24 小时一次;关于页可关)。失败静默,关于页能看到原因。
+    LaunchedEffect(Unit) { if (graph.prefs.updateAutoCheckEnabled) graph.updateChecker.checkIfDue() }
+    val updateState by graph.updateChecker.state.collectAsStateWithLifecycle()
+    val availableUpdate = (updateState as? UpdateChecker.State.Available)?.takeUnless { it.skipped }?.release
 
     // 位置变动就重算附近(移动不足 50m 不重算 — iOS 的节流)。
     LaunchedEffect(locationProvider.location, store.dataGeneration) {
@@ -569,6 +575,9 @@ fun RootScreen() {
                     onReplayWelcome = { showWelcome = true },
                     visitedSummary = visitedSummary,
                     onOpenPilgrimageLog = { router.openPilgrimageLog() },
+                    availableUpdate = availableUpdate,
+                    onOpenUpdate = { ExternalLinks.openInCustomTab(context, it.htmlUrl) },
+                    onSkipUpdate = { graph.updateChecker.skip(it) },
                     onOpenWeb = {
                         val idle = idleState
                         ExternalLinks.openInCustomTab(
@@ -715,14 +724,7 @@ fun RootScreen() {
     }
 
     if (showAbout) {
-        AboutSheet(
-            versionName = remember {
-                runCatching {
-                    context.packageManager.getPackageInfo(context.packageName, 0).versionName
-                }.getOrNull() ?: "0.1"
-            },
-            onDismiss = { showAbout = false },
-        )
+        AboutSheet(versionName = graph.versionName, onDismiss = { showAbout = false })
     }
     if (showEtiquette) {
         EtiquetteSheet(onDismiss = { showEtiquette = false })

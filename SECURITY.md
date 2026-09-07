@@ -50,7 +50,7 @@
 | **相册写入** | `support/MediaStoreSaver.kt` | MediaStore + `IS_PENDING` 协议,固定写入 `Pictures/Anitabi`;minSdk 29 起无需存储权限 |
 | **用户数据文件** | `data/PilgrimageLog.kt` | 巡礼记录 `files/pilgrimage_log.json`:只含地标 id / 作品 id / 时间戳,不含坐标;原子写;损坏时改名保留 |
 | **定位** | `data/LocationProvider.kt` | 仅前台、粗精度优先、无后台定位、不上传坐标 |
-| **日志** | 全库 4 条 | 不含坐标、URL 参数或用户数据。请保持 |
+| **日志** | 十来条,集中在抠图链路与拍摄页 | 只记异常类名 / 状态码 / 耗时,不含坐标、URL 参数或用户数据。请保持 |
 
 已核实的干净项:无分析/崩溃 SDK、无设备标识符采集、剪贴板只写不读、仓库内无任何二进制
 (唯一的 jar 是 gradle-wrapper)、无账号体系与鉴权逻辑。
